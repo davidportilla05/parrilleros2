@@ -248,7 +248,7 @@ const WelcomePage: React.FC = () => {
             className="text-center flex justify-center"
           >
             <img 
-              src="/parrilleros-logo.png" 
+              src="../../public/MERO.png" 
               alt="Parrilleros Fast Food Logo" 
               className="h-20 w-auto object-contain drop-shadow-2xl"
             />

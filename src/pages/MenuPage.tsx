@@ -18,7 +18,7 @@ gsap.registerPlugin(ScrollTrigger);
 const MenuPage: React.FC = () => {
   const navigate = useNavigate();
   const { cart } = useOrder();
-  const [selectedCategory, setSelectedCategory] = useState(categories[0].id);
+  const [selectedCategory, setSelectedCategory] = useState('classic-burgers'); // Start with classic burgers
   const [searchQuery, setSearchQuery] = useState('');
   const [showTourButton, setShowTourButton] = useState(true);
   

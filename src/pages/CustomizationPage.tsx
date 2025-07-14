@@ -14,7 +14,7 @@ const CustomizationPage: React.FC = () => {
   const [selectedOptions, setSelectedOptions] = useState<CustomizationOption[]>([]);
   const [specialInstructions, setSpecialInstructions] = useState('');
   const [withFries, setWithFries] = useState(false);
-  const [withRusticFries, setWithRusticFries] = useState(false);
+  const [friesType, setFriesType] = useState<'none' | 'french' | 'rustic'>('none');
   const [expandedCategories, setExpandedCategories] = useState<Set<string>>(new Set(['proteinas'])); // Proteínas expanded by default
   const { addToCart } = useOrder();
 
@@ -45,7 +45,8 @@ const CustomizationPage: React.FC = () => {
   };
 
   const handleAddToCart = () => {
-    addToCart(menuItem, quantity, selectedOptions, withFries, specialInstructions);
+    const hasFries = friesType !== 'none';
+    addToCart(menuItem, quantity, selectedOptions, hasFries, specialInstructions);
     
     // Check if it's a burger to show suggestions
     const isBurgerCategory = menuItem.category.includes('burger');
@@ -56,7 +57,7 @@ const CustomizationPage: React.FC = () => {
     }
   };
 
-  const basePrice = withFries ? (menuItem.priceWithFries || menuItem.price) : menuItem.price;
+  const basePrice = friesType !== 'none' ? (menuItem.priceWithFries || menuItem.price) : menuItem.price;
   const optionsPrice = selectedOptions.reduce((sum, option) => sum + option.price, 0);
   const totalPrice = (basePrice + optionsPrice) * quantity;
 
@@ -271,7 +272,7 @@ const CustomizationPage: React.FC = () => {
                   {/* Opción 1: Papas Francesas */}
                   <label
                     className={`flex items-center justify-between p-4 rounded-lg border-2 transition-all cursor-pointer hover:shadow-sm ${
-                      withFries
+                      friesType === 'french'
                         ? 'border-[#FF8C00] bg-orange-50 shadow-md scale-[1.01]'
                         : 'border-gray-200 bg-white hover:border-gray-300'
                     } transition-transform duration-200 ease-in-out`}
@@ -279,8 +280,8 @@ const CustomizationPage: React.FC = () => {
                     <div className="flex items-center">
                       <input
                         type="checkbox"
-                        checked={withFries}
-                        onChange={() => setWithFries(!withFries)}
+                        checked={friesType === 'french'}
+                        onChange={() => setFriesType(friesType === 'french' ? 'none' : 'french')}
                         className="w-5 h-5 accent-[#FF8C00] mr-4"
                       />
                       <div>
@@ -296,7 +297,7 @@ const CustomizationPage: React.FC = () => {
                   {/* Opción 2: Papas Rústicas */}
                   <label
                     className={`flex items-center justify-between p-4 rounded-lg border-2 transition-all cursor-pointer hover:shadow-sm ${
-                      withRusticFries
+                      friesType === 'rustic'
                         ? 'border-[#FF8C00] bg-orange-50 shadow-md scale-[1.01]'
                         : 'border-gray-200 bg-white hover:border-gray-300'
                     } transition-transform duration-200 ease-in-out mt-4`}
@@ -304,8 +305,8 @@ const CustomizationPage: React.FC = () => {
                     <div className="flex items-center">
                       <input
                         type="checkbox"
-                        checked={withFries}
-                        onChange={() => setWithFries(!withFries)}
+                        checked={friesType === 'rustic'}
+                        onChange={() => setFriesType(friesType === 'rustic' ? 'none' : 'rustic')}
                         className="w-5 h-5 accent-[#FF8C00] mr-4"
                       />
                       <div>
@@ -394,8 +395,11 @@ const CustomizationPage: React.FC = () => {
                 />
                 <div>
                   <h4 className="font-bold text-gray-800">{menuItem.name}</h4>
-                  {withFries && (
+                  {friesType === 'french' && (
                     <span className="text-sm text-[#FF8C00] font-medium">+ Papas Francesas</span>
+                  )}
+                  {friesType === 'rustic' && (
+                    <span className="text-sm text-[#FF8C00] font-medium">+ Papas Rústicas</span>
                   )}
                 </div>
               </div>

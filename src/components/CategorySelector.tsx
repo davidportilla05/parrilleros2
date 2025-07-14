@@ -38,6 +38,13 @@ const CategorySelector: React.FC<CategorySelectorProps> = ({
     cat => cat.id.includes('burgers') && cat.id !== 'burgers'
   );
 
+  // Auto-select classic burgers if no category is selected or if 'burgers' is selected
+  React.useEffect(() => {
+    if (selectedCategory === 'burgers' || selectedCategory === categories[0]?.id) {
+      onSelectCategory('classic-burgers');
+    }
+  }, [selectedCategory, onSelectCategory]);
+
   return (
     <div className="bg-white shadow-lg rounded-2xl p-4 mt-18">
       {/* Main categories */}
@@ -47,12 +54,12 @@ const CategorySelector: React.FC<CategorySelectorProps> = ({
             key={category.id}
             onClick={() => onSelectCategory(category.id)}
             className={`flex flex-col items-center px-6 py-3 rounded-xl transition-all transform hover:scale-105 ${
-              selectedCategory === category.id
+              selectedCategory === category.id || (category.id === 'burgers' && selectedCategory.includes('burgers'))
                 ? 'bg-[#FF8C00] text-white shadow-lg scale-105'
                 : 'bg-gray-50 text-gray-700 hover:bg-gray-100'
             }`}
           >
-            <div className={`mb-2 ${selectedCategory === category.id ? 'text-white' : 'text-[#FF8C00]'}`}>
+            <div className={`mb-2 ${selectedCategory === category.id || (category.id === 'burgers' && selectedCategory.includes('burgers')) ? 'text-white' : 'text-[#FF8C00]'}`}>
               {getIconForCategory(category.icon)}
             </div>
             <span className="text-sm font-medium whitespace-nowrap">{category.name}</span>

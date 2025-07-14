@@ -1,0 +1,390 @@
+/* Import fonts first - before Tailwind directives */
+@import url('https://fonts.googleapis.com/css2?family=Creepster&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom HEAVYRUST-style font class */
+.font-heavyrust {
+  font-family: 'Creepster', cursive;
+  font-weight: 400;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+/* Alternative local font if available */
+@font-face {
+  font-family: 'HEAVYRUST';
+  src: url('/fonts/HEAVYRUST.woff2') format('woff2'),
+       url('/fonts/HEAVYRUST.woff') format('woff'),
+       url('/fonts/HEAVYRUST.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Fallback to Creepster if HEAVYRUST is not available */
+.font-heavyrust-primary {
+  font-family: 'HEAVYRUST', 'Creepster', cursive;
+  font-weight: 400;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+/* BEBAS NEUE font for FAST FOOD */
+.font-bebas-neue {
+  font-family: 'Bebas Neue', cursive;
+  font-weight: 400;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+/* Alternative local BEBAS NEUE font if available */
+@font-face {
+  font-family: 'BEBAS NEUE';
+  src: url('/fonts/BEBAS-NEUE.woff2') format('woff2'),
+       url('/fonts/BEBAS-NEUE.woff') format('woff'),
+       url('/fonts/BEBAS-NEUE.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Primary BEBAS NEUE class with fallback */
+.font-bebas-neue-primary {
+  font-family: 'BEBAS NEUE', 'Bebas Neue', cursive;
+  font-weight: 400;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+/* Background Layers with Mix Blend Modes */
+.welcome-page-bg {
+  background: #1A1A1A;
+}
+
+.bg-layer-1 {
+  background-image: url('https://images.pexels.com/photos/1639557/pexels-photo-1639557.jpeg?auto=compress&cs=tinysrgb&w=1920&h=1080&dpr=2');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  opacity: 0.15;
+  mix-blend-mode: overlay;
+}
+
+.bg-layer-2 {
+  background-image: url('https://images.pexels.com/photos/2983101/pexels-photo-2983101.jpeg?auto=compress&cs=tinysrgb&w=1920&h=1080&dpr=2');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  opacity: 0.1;
+  mix-blend-mode: screen;
+}
+
+.bg-overlay {
+  background: linear-gradient(135deg, rgba(255, 140, 0, 0.1) 0%, rgba(26, 26, 26, 0.8) 50%, rgba(255, 140, 0, 0.05) 100%);
+  mix-blend-mode: multiply;
+}
+
+/* Menu Page Background */
+.menu-page-bg {
+  background-image: url('https://i.pinimg.com/736x/79/48/e2/7948e272c6ab4e231ade381996baf26f.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  position: relative;
+}
+
+.menu-page-bg::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(0, 0, 0, 0.7) 0%, rgba(255, 140, 0, 0.1) 50%, rgba(0, 0, 0, 0.8) 100%);
+  mix-blend-mode: multiply;
+  z-index: 1;
+}
+
+.menu-page-bg > * {
+  position: relative;
+  z-index: 2;
+}
+
+/* Enhanced card backgrounds for better visibility */
+.menu-card-enhanced {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 140, 0, 0.2);
+}
+
+.menu-search-enhanced {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border: 2px solid rgba(255, 140, 0, 0.3);
+}
+
+.menu-category-enhanced {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 140, 0, 0.2);
+}
+
+/* Text Shadow Effects */
+.text-shadow-lg {
+  text-shadow: 0 4px 8px rgba(0, 0, 0, 0.8), 0 2px 4px rgba(255, 140, 0, 0.3);
+}
+
+.text-shadow-md {
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.6), 0 1px 2px rgba(255, 140, 0, 0.2);
+}
+
+/* GSAP Animation Classes */
+.gsap-fade-in {
+  opacity: 0;
+  transform: translateY(30px);
+}
+
+.gsap-scale-in {
+  opacity: 0;
+  transform: scale(0.8);
+}
+
+.gsap-slide-in-left {
+  opacity: 0;
+  transform: translateX(-50px);
+}
+
+.gsap-slide-in-right {
+  opacity: 0;
+  transform: translateX(50px);
+}
+
+.gsap-rotate-in {
+  opacity: 0;
+  transform: rotate(-180deg) scale(0.5);
+}
+
+/* Menu Card Hover Effects with GSAP */
+.menu-card-container {
+  perspective: 1000px;
+}
+
+.menu-card-container:hover {
+  transform: translateY(-5px);
+  transition: transform 0.3s ease;
+}
+
+/* Custom animations for enhanced UX */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(255, 140, 0, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 30px rgba(255, 140, 0, 0.6);
+  }
+}
+
+.float-animation {
+  animation: float 3s ease-in-out infinite;
+}
+
+.pulse-glow-animation {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+/* Driver.js Custom Styles for Kiosk */
+.kiosk-tour-popover {
+  background: white !important;
+  border: 2px solid #FF8C00 !important;
+  border-radius: 12px !important;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04) !important;
+  font-family: system-ui, -apple-system, sans-serif !important;
+}
+
+.kiosk-tour-popover .driver-popover-title {
+  color: #1F2937 !important;
+  font-size: 1.25rem !important;
+  font-weight: 700 !important;
+  margin-bottom: 8px !important;
+  border-bottom: 2px solid #FF8C00 !important;
+  padding-bottom: 8px !important;
+}
+
+.kiosk-tour-popover .driver-popover-description {
+  color: #4B5563 !important;
+  font-size: 1rem !important;
+  line-height: 1.5 !important;
+  margin-bottom: 16px !important;
+}
+
+.kiosk-tour-popover .driver-popover-footer {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  gap: 12px !important;
+  margin-top: 16px !important;
+  padding-top: 16px !important;
+  border-top: 1px solid #E5E7EB !important;
+}
+
+.kiosk-tour-popover .driver-popover-navigation-btns {
+  display: flex !important;
+  gap: 8px !important;
+}
+
+.kiosk-tour-popover .driver-popover-btn {
+  padding: 8px 16px !important;
+  border-radius: 8px !important;
+  font-weight: 600 !important;
+  font-size: 0.875rem !important;
+  transition: all 0.2s ease !important;
+  border: none !important;
+  cursor: pointer !important;
+}
+
+.kiosk-tour-popover .driver-popover-next-btn {
+  background: #FF8C00 !important;
+  color: white !important;
+}
+
+.kiosk-tour-popover .driver-popover-next-btn:hover {
+  background: #EA7C00 !important;
+  transform: translateY(-1px) !important;
+}
+
+.kiosk-tour-popover .driver-popover-prev-btn {
+  background: #F3F4F6 !important;
+  color: #374151 !important;
+}
+
+.kiosk-tour-popover .driver-popover-prev-btn:hover {
+  background: #E5E7EB !important;
+}
+
+.kiosk-tour-popover .driver-popover-close-btn {
+  background: #EF4444 !important;
+  color: white !important;
+  border-radius: 50% !important;
+  width: 32px !important;
+  height: 32px !important;
+  padding: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  position: absolute !important;
+  top: 12px !important;
+  right: 12px !important;
+}
+
+.kiosk-tour-popover .driver-popover-close-btn:hover {
+  background: #DC2626 !important;
+}
+
+.kiosk-tour-popover .driver-popover-progress-text {
+  color: #6B7280 !important;
+  font-size: 0.875rem !important;
+  font-weight: 500 !important;
+}
+
+.kiosk-tour-active {
+  border: 3px solid #FF8C00 !important;
+  border-radius: 8px !important;
+  box-shadow: 0 0 0 4px rgba(255, 140, 0, 0.2) !important;
+}
+
+/* Custom animations for tour elements */
+@keyframes tour-pulse {
+  0%, 100% {
+    box-shadow: 0 0 0 4px rgba(255, 140, 0, 0.2);
+  }
+  50% {
+    box-shadow: 0 0 0 8px rgba(255, 140, 0, 0.1);
+  }
+}
+
+.kiosk-tour-active {
+  animation: tour-pulse 2s infinite !important;
+}
+
+/* Print styles */
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  
+  .print-content,
+  .print-content * {
+    visibility: visible;
+  }
+  
+  .print-content {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+  }
+  
+  /* Hide non-printable elements */
+  button,
+  .no-print {
+    display: none !important;
+  }
+}
+
+/* Tour button specific styles */
+.tour-button-floating {
+  backdrop-filter: blur(10px);
+  background: rgba(59, 130, 246, 0.9) !important;
+}
+
+.tour-button-floating:hover {
+  background: rgba(37, 99, 235, 0.95) !important;
+}
+
+/* Responsive tour adjustments */
+@media (max-width: 768px) {
+  .kiosk-tour-popover {
+    max-width: 90vw !important;
+    margin: 10px !important;
+  }
+  
+  .kiosk-tour-popover .driver-popover-title {
+    font-size: 1.125rem !important;
+  }
+  
+  .kiosk-tour-popover .driver-popover-description {
+    font-size: 0.875rem !important;
+  }
+  
+  .kiosk-tour-popover .driver-popover-btn {
+    padding: 6px 12px !important;
+    font-size: 0.75rem !important;
+  }
+}
+
+/* Smooth scrolling for better UX */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Performance optimizations for animations */
+.menu-card-container,
+.gsap-animated {
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+  transform-style: preserve-3d;
+}

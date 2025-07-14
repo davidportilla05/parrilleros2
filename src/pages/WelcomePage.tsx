@@ -245,14 +245,13 @@ const WelcomePage: React.FC = () => {
           {/* Texto de la marca - mantiene la misma posición */}
           <div 
             ref={titleRef}
-            className="text-center"
+            className="text-center flex justify-center"
           >
-            <h1 className="text-5xl font-extrabold text-white mb-2 font-heavyrust-primary text-shadow-lg">
-              PARRILLEROS
-            </h1>
-            <p className="text-2xl text-[#FF8C00] font-bold font-bebas-neue-primary text-shadow-md">
-              FAST FOOD
-            </p>
+            <img 
+              src="/parrilleros-logo.png" 
+              alt="Parrilleros Fast Food Logo" 
+              className="h-20 w-auto object-contain drop-shadow-2xl"
+            />
           </div>
         </div>
         

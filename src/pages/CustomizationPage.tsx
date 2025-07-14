@@ -46,7 +46,12 @@ const CustomizationPage: React.FC = () => {
 
   const handleAddToCart = () => {
     const hasFries = friesType !== 'none';
-    addToCart(menuItem, quantity, selectedOptions, hasFries, specialInstructions);
+    // Crear un item temporal para pasar el tipo de papas
+    const tempItem = {
+      ...menuItem,
+      friesType: friesType !== 'none' ? friesType : undefined
+    };
+    addToCart(menuItem, quantity, selectedOptions, hasFries, specialInstructions, friesType !== 'none' ? friesType : undefined);
     
     // Check if it's a burger to show suggestions
     const isBurgerCategory = menuItem.category.includes('burger');

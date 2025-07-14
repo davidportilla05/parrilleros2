@@ -3,7 +3,7 @@ import { CartItem, MenuItem, CustomizationOption, PaymentMethod, Order } from '.
 
 interface OrderContextType {
   cart: CartItem[];
-  addToCart: (menuItem: MenuItem, quantity: number, customizations: CustomizationOption[], withFries: boolean, specialInstructions?: string) => void;
+  addToCart: (menuItem: MenuItem, quantity: number, customizations: CustomizationOption[], withFries: boolean, specialInstructions?: string, friesType?: 'french' | 'rustic') => void;
   removeFromCart: (cartItemId: string) => void;
   updateQuantity: (cartItemId: string, quantity: number) => void;
   clearCart: () => void;
@@ -56,7 +56,8 @@ export const OrderProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     quantity: number,
     customizations: CustomizationOption[],
     withFries: boolean,
-    specialInstructions?: string
+    specialInstructions?: string,
+    friesType?: 'french' | 'rustic'
   ) => {
     const cartItemId = `${menuItem.id}_${Date.now()}`;
     const newItem: CartItem = {
@@ -65,6 +66,7 @@ export const OrderProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       quantity,
       customizations,
       withFries,
+      friesType,
       specialInstructions
     };
     

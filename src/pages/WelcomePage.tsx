@@ -219,24 +219,41 @@ const WelcomePage: React.FC = () => {
       {/* Logo and Content */}
       <div className="relative z-10">
         <div className="mb-8">
-          <div 
-            ref={logoRef}
-            className="inline-flex items-center justify-center w-32 h-32 bg-[#FF8C00] rounded-full mb-6 shadow-2xl"
-          >
-            <Beef size={80} className="text-white" />
+          {/* Logo Container - Espacio reservado para el logo de la marca */}
+          <div className="mb-8">
+            <div 
+              ref={logoRef}
+              className="inline-flex items-center justify-center w-40 h-40 bg-white/10 backdrop-blur-sm rounded-2xl mb-6 shadow-2xl border-2 border-white/20"
+            >
+              {/* Placeholder para el logo - reemplazar con <img> cuando tengas el logo */}
+              <div className="text-center">
+                <Beef size={60} className="text-[#FF8C00] mx-auto mb-2" />
+                <div className="text-white text-xs font-medium">
+                  LOGO AQUÍ
+                </div>
+              </div>
+              {/* Cuando tengas el logo, reemplaza todo el div de arriba con:
+              <img 
+                src="/ruta-a-tu-logo.png" 
+                alt="Parrilleros Logo" 
+                className="w-full h-full object-contain"
+              />
+              */}
+            </div>
           </div>
-          <h1 
+          
+          {/* Texto de la marca - mantiene la misma posición */}
+          <div 
             ref={titleRef}
-            className="text-5xl font-extrabold text-white mb-2 font-heavyrust-primary text-shadow-lg"
+            className="text-center"
           >
-            PARRILLEROS
-          </h1>
-          <p 
-            ref={subtitleRef}
-            className="text-2xl text-[#FF8C00] font-bold font-bebas-neue-primary text-shadow-md"
-          >
-            FAST FOOD
-          </p>
+            <h1 className="text-5xl font-extrabold text-white mb-2 font-heavyrust-primary text-shadow-lg">
+              PARRILLEROS
+            </h1>
+            <p className="text-2xl text-[#FF8C00] font-bold font-bebas-neue-primary text-shadow-md">
+              FAST FOOD
+            </p>
+          </div>
         </div>
         
         <div>

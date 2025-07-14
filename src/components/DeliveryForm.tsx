@@ -141,7 +141,14 @@ const DeliveryForm: React.FC<DeliveryFormProps> = ({ onBack }) => {
       
       let itemText = `${index + 1}. ${item.menuItem.name}`;
       if (item.withFries) {
-        itemText += ' + Papas';
+        // Usar el tipo específico de papas del item
+        if (item.friesType === 'rustic') {
+          itemText += ' + Papas Rústicas';
+        } else if (item.friesType === 'french') {
+          itemText += ' + Papas Francesas';
+        } else {
+          itemText += ' + Papas'; // fallback
+        }
       }
       itemText += ` x${item.quantity} - $${Math.round(itemSubtotal).toLocaleString()}`;
       

@@ -9,7 +9,7 @@ interface CartItemProps {
 }
 
 const CartItem: React.FC<CartItemProps> = ({ item, readOnly = false }) => {
-  const { menuItem, quantity, customizations, specialInstructions, withFries } = item;
+  const { menuItem, quantity, customizations, specialInstructions, withFries, friesType } = item;
   const { updateQuantity, removeFromCart } = useOrder();
 
   const basePrice = withFries ? (menuItem.priceWithFries || menuItem.price) : menuItem.price;
@@ -20,6 +20,13 @@ const CartItem: React.FC<CartItemProps> = ({ item, readOnly = false }) => {
 
   const itemTotal = (basePrice + customizationsTotal) * quantity;
 
+  // Determinar el texto de las papas
+  const getFriesText = () => {
+    if (!withFries) return '';
+    if (friesType === 'rustic') return ' + Papas Rústicas';
+    if (friesType === 'french') return ' + Papas Francesas';
+    return ' + Papas'; // fallback
+  };
   return (
     <div className="bg-white rounded-lg shadow-sm p-4 mb-3">
       <div className="flex justify-between items-start">
@@ -34,7 +41,7 @@ const CartItem: React.FC<CartItemProps> = ({ item, readOnly = false }) => {
           <div>
             <h3 className="font-bold text-gray-800">
               {menuItem.name}
-              {withFries && ' + Papas'}
+              {getFriesText()}
             </h3>
             {customizations.length > 0 && (
               <div className="mt-1">

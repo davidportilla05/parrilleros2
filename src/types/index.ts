@@ -23,6 +23,7 @@ export interface CartItem {
   quantity: number;
   customizations: CustomizationOption[];
   withFries: boolean;
+  friesType?: 'french' | 'rustic';
   specialInstructions?: string;
 }
 

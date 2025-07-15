@@ -42,7 +42,12 @@ const deliveryFormTourSteps = [
 
 const DeliveryForm: React.FC<DeliveryFormProps> = ({ onBack }) => {
   const navigate = useNavigate();
+  const location = useLocation();
   const { cart, total, clearCart, orderNumber } = useOrder();
+  
+  // Check if this is pickup mode
+  const isPickup = location.state?.isPickup || false;
+  
   const [selectedLocation, setSelectedLocation] = useState<Location | null>(null);
   const [showLocationSelection, setShowLocationSelection] = useState(true);
   const [formData, setFormData] = useState({
@@ -113,14 +118,27 @@ const DeliveryForm: React.FC<DeliveryFormProps> = ({ onBack }) => {
   };
 
   const isFormValid = () => {
-    const basicFieldsValid = selectedLocation &&
-           formData.name && 
-           formData.address && 
-           formData.neighborhood && 
-           formData.phone && 
-           formData.paymentMethod && 
-           cart.length > 0 &&
-           formData.dataProcessingAuthorized;
+    let basicFieldsValid;
+    
+    if (isPickup) {
+      // Para recogida no necesitamos dirección ni barrio
+      basicFieldsValid = selectedLocation &&
+             formData.name && 
+             formData.phone && 
+             formData.paymentMethod && 
+             cart.length > 0 &&
+             formData.dataProcessingAuthorized;
+    } else {
+      // Para domicilio sí necesitamos dirección y barrio
+      basicFieldsValid = selectedLocation &&
+             formData.name && 
+             formData.address && 
+             formData.neighborhood && 
+             formData.phone && 
+             formData.paymentMethod && 
+             cart.length > 0 &&
+             formData.dataProcessingAuthorized;
+    }
 
     if (formData.requiresInvoice) {
       return basicFieldsValid && formData.cedula && formData.email;
@@ -167,7 +185,7 @@ const DeliveryForm: React.FC<DeliveryFormProps> = ({ onBack }) => {
       `\n📄 FACTURA REQUERIDA\nCC: ${formData.cedula} | Email: ${formData.email}` : 
       '\n📄 Sin factura';
 
-    return `🍔 NUEVO PEDIDO DOMICILIO - PARRILLEROS
+    return `🍔 NUEVO PEDIDO ${isPickup ? 'RECOGIDA' : 'DOMICILIO'} - PARRILLEROS
 ═══════════════════════════════════════
 
 📋 PEDIDO #${orderNumber.toString().padStart(3, '0')} | ${new Date().toLocaleDateString()} ${new Date().toLocaleTimeString()}
@@ -176,8 +194,8 @@ const DeliveryForm: React.FC<DeliveryFormProps> = ({ onBack }) => {
 ${formData.name}
 📱 ${formData.phone}${invoiceInfo}
 
-📍 ENTREGA
-${formData.address}, ${formData.neighborhood}
+${isPickup ? '🏪 RECOGIDA EN SEDE' : '📍 ENTREGA'}
+${isPickup ? `${selectedLocation?.name}\n${selectedLocation?.address}\nTel: ${selectedLocation?.phone}` : `${formData.address}, ${formData.neighborhood}`}
 
 🛒 PRODUCTOS
 ${cartDetails}
@@ -188,9 +206,9 @@ ${cartDetails}
 • TOTAL: $${Math.round(total).toLocaleString()}
 
 💳 Forma de pago: ${formData.paymentMethod}
-⏰ Tiempo estimado: 45-60 minutos
+⏰ Tiempo estimado: ${isPickup ? '15-20 minutos' : '45-60 minutos'}
 
-¡PROCESAR INMEDIATAMENTE!
+${isPickup ? '¡PREPARAR INMEDIATAMENTE!' : '¡PROCESAR INMEDIATAMENTE!'}
 
 📍 ${selectedLocation?.name} | ${selectedLocation?.phone}`;
   };
@@ -751,7 +769,7 @@ ${cartDetails}
               📞 Te contactaremos pronto
             </p>
             <p className="text-sm text-orange-700">
-              El equipo de <strong className="font-heavyrust-primary">{selectedLocation?.name}</strong> se comunicará contigo en los próximos minutos para confirmar tu pedido y coordinar la entrega.
+              El equipo de <strong className="font-heavyrust-primary">{selectedLocation?.name}</strong> se comunicará contigo en los próximos minutos para confirmar tu pedido{isPickup ? '' : ' y coordinar la entrega'}.
             </p>
           </div>
 
@@ -779,7 +797,9 @@ ${cartDetails}
 
             <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
               <span className="text-gray-600">📍 Dirección:</span>
-              <span className="font-medium text-right">{formData.address}, {formData.neighborhood}</span>
+              <span className="font-medium text-right">
+                {isPickup ? `Recogida en ${selectedLocation?.name}` : `${formData.address}, ${formData.neighborhood}`}
+              </span>
             </div>
 
             {/* Información de factura */}
@@ -843,7 +863,8 @@ ${cartDetails}
               <Clock size={20} className="text-blue-600 mr-2" />
               <span className="font-bold text-blue-800">Tiempo estimado</span>
             </div>
-            <p className="text-2xl font-bold text-blue-600">45-60 minutos</p>
+            <p className="text-2xl font-bold text-blue-600">{isPickup ? '15-20 minutos' : '45-60 minutos'}</p>
+            {isPickup && <p className="text-sm text-blue-700 mt-2">Tu pedido estará listo para recoger</p>}
           </div>
 
           {/* Ticket Actions */}
@@ -898,22 +919,22 @@ ${cartDetails}
             </button>
             <div>
               <h1 className="text-2xl font-bold text-gray-800 flex items-center">
-                <Truck size={28} className="mr-2 text-[#FF8C00]" />
-                Datos de Entrega
+                {isPickup ? <MapPin size={28} className="mr-2 text-green-600" /> : <Truck size={28} className="mr-2 text-[#FF8C00]" />}
+                {isPickup ? 'Datos de Recogida' : 'Datos de Entrega'}
               </h1>
-              <p className="text-gray-600">Completa tus datos para procesar tu pedido</p>
+              <p className="text-gray-600">{isPickup ? 'Completa tus datos para procesar tu pedido de recogida' : 'Completa tus datos para procesar tu pedido'}</p>
             </div>
           </div>
           
           {/* Selected Location Info */}
-          <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+          <div className={`${isPickup ? 'bg-green-50 border-green-200' : 'bg-green-50 border-green-200'} border rounded-lg p-4`}>
             <div className="flex items-center">
-              <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center mr-3">
-                <CheckCircle size={16} className="text-green-600" />
+              <div className={`w-8 h-8 ${isPickup ? 'bg-green-100' : 'bg-green-100'} rounded-full flex items-center justify-center mr-3`}>
+                <CheckCircle size={16} className={`${isPickup ? 'text-green-600' : 'text-green-600'}`} />
               </div>
               <div>
                 <p className="font-medium text-green-800">
-                  Sede seleccionada: <span className="font-heavyrust-primary">{selectedLocation?.name}</span>
+                  {isPickup ? 'Sede para recogida' : 'Sede seleccionada'}: <span className="font-heavyrust-primary">{selectedLocation?.name}</span>
                 </p>
                 <p className="text-sm text-green-600">
                   {selectedLocation?.address} | {selectedLocation?.phone}
@@ -947,6 +968,7 @@ ${cartDetails}
                 </div>
 
                 {/* Address */}
+                {!isPickup && (
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
                     <MapPin size={16} className="inline mr-2" />
@@ -960,8 +982,10 @@ ${cartDetails}
                     placeholder="Calle, carrera, número"
                   />
                 </div>
+                )}
 
                 {/* Neighborhood */}
+                {!isPickup && (
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
                     Barrio *
@@ -990,6 +1014,7 @@ ${cartDetails}
 
                   </div>
                 </div>
+                )}
 
                 {/* Phone */}
                 <div>
@@ -1136,7 +1161,7 @@ ${cartDetails}
                 ) : (
                   <>
                     <Send size={20} className="mr-2" />
-                    Enviar Pedido a Domicilio
+                    {isPickup ? 'Enviar Pedido para Recogida' : 'Enviar Pedido a Domicilio'}
                   </>
                 )}
               </button>

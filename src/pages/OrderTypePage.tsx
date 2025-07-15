@@ -29,7 +29,7 @@ const OrderTypePage: React.FC = () => {
       if (type === 'delivery') {
         navigate('/delivery-form');
       } else {
-        navigate('/pickup-location-selection');
+        navigate('/delivery-form', { state: { isPickup: true } });
       }
     }, 500);
   };

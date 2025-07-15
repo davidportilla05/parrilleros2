@@ -1,17 +1,19 @@
 import React, { useState, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { User, Phone, CreditCard, Mail, FileText, ArrowLeft, Send, CheckCircle, Clock, MapPin, Download, Printer, Receipt, ExternalLink } from 'lucide-react';
 import { useOrder } from '../context/OrderContext';
 import OrderSummary from '../components/OrderSummary';
-import LocationSelector from '../components/LocationSelector';
-import { locations } from '../data/locations';
 import { Location } from '../types';
 import { generateInvoicePDF } from '../utils/pdfGenerator';
 
 const PickupFormPage: React.FC = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const { cart, total, clearCart, orderNumber } = useOrder();
-  const [selectedLocation, setSelectedLocation] = useState<Location | null>(null);
+  
+  // Get selected location from navigation state
+  const selectedLocation = location.state?.selectedLocation as Location | null;
+  
   const [formData, setFormData] = useState({
     name: '',
     phone: '',
@@ -769,7 +771,7 @@ ${cartDetails}
         <div className="bg-white rounded-lg shadow-md p-6 mb-6">
           <div className="flex items-center mb-4">
             <button
-              onClick={() => navigate('/order-type')}
+              onClick={() => navigate('/pickup-location-selection')}
               className="mr-4 p-2 bg-gray-100 rounded-full hover:bg-gray-200 transition-colors"
             >
               <ArrowLeft size={20} />
@@ -782,17 +784,30 @@ ${cartDetails}
               <p className="text-gray-600">Selecciona tu sede y completa tus datos</p>
             </div>
           </div>
+          
+          {/* Selected Location Info */}
+          {selectedLocation && (
+            <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+              <div className="flex items-center">
+                <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center mr-3">
+                  <CheckCircle size={16} className="text-green-600" />
+                </div>
+                <div>
+                  <p className="font-medium text-green-800">
+                    Sede seleccionada: <span className="font-heavyrust-primary">{selectedLocation?.name}</span>
+                  </p>
+                  <p className="text-sm text-green-600">
+                    {selectedLocation?.address} | {selectedLocation?.phone}
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* Left Column - Location and Form */}
           <div className="space-y-6">
-            {/* Location Selection */}
-            <LocationSelector
-              locations={locations}
-              selectedLocation={selectedLocation}
-              onSelectLocation={setSelectedLocation}
-            />
 
             {/* Form */}
             <div className="bg-white rounded-lg shadow-md p-6">

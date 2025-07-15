@@ -11,6 +11,7 @@ import SuggestionsPage from './pages/SuggestionsPage';
 import OrderTypePage from './pages/OrderTypePage';
 import DeliveryForm from './components/DeliveryForm';
 import PickupFormPage from './pages/PickupFormPage';
+import PickupLocationSelectionPage from './pages/PickupLocationSelectionPage';
 import TicketPage from './pages/TicketPage';
 import PrivacyPolicyPage from './pages/PrivacyPolicyPage';
 
@@ -27,6 +28,7 @@ function App() {
           <Route path="/order-type" element={<OrderTypePage />} />
           <Route path="/delivery-form" element={<DeliveryForm onBack={() => {}} />} />
           <Route path="/pickup-form" element={<PickupFormPage />} />
+          <Route path="/pickup-location-selection" element={<PickupLocationSelectionPage />} />
           <Route path="/ticket" element={<TicketPage />} />
           <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
           <Route path="*" element={<Navigate to="/" replace />} />
